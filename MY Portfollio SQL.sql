@@ -251,3 +251,61 @@ JOIN Person.BusinessEntityAddress
 JOIN Person.Address  
     ON Person.BusinessEntityAddress.AddressID = Person.Address.AddressID  
 WHERE HumanResources.Employee.JobTitle LIKE '%Manager%';
+
+
+19 ----   Show the total number of employees per city.
+
+
+SELECT  
+    Person.Address.City,  
+    COUNT(HumanResources.Employee.BusinessEntityID) AS TotalEmployees  
+FROM HumanResources.Employee  
+JOIN Person.BusinessEntityAddress  
+    ON HumanResources.Employee.BusinessEntityID = Person.BusinessEntityAddress.BusinessEntityID  
+JOIN Person.Address  
+    ON Person.BusinessEntityAddress.AddressID = Person.Address.AddressID  
+GROUP BY Person.Address.City  
+ORDER BY TotalEmployees DESC;
+
+
+20   -----    List employees and show if they are salaried or not (SalariedFlag).
+
+sELECT  
+    Person.Person.FirstName,  
+    Person.Person.LastName,  
+    HumanResources.Employee.JobTitle,  
+    HumanResources.Employee.SalariedFlag  
+FROM HumanResources.Employee  
+JOIN Person.Person  
+    ON HumanResources.Employee.BusinessEntityID = Person.Person.BusinessEntityID;
+ 
+
+ 21----   Find employees who have the same last name but live in different cities.
+
+
+
+ 
+    SELECT  
+    Person1.FirstName,  
+    Person1.LastName,  
+    Address1.City AS City1,  
+    Person2.FirstName AS OtherFirstName,  
+    Person2.LastName AS OtherLastName,  
+    Address2.City AS City2  
+FROM Person.Person AS Person1  
+INNER JOIN Person.BusinessEntityAddress AS BusinessEntityAddress1  
+    ON Person1.BusinessEntityID = BusinessEntityAddress1.BusinessEntityID  
+INNER JOIN Person.Address AS Address1  
+    ON BusinessEntityAddress1.AddressID = Address1.AddressID  
+
+INNER JOIN Person.Person AS Person2  
+    ON Person1.LastName = Person2.LastName  
+    AND Person1.BusinessEntityID <> Person2.BusinessEntityID  
+INNER JOIN Person.BusinessEntityAddress AS BusinessEntityAddress2  
+    ON Person2.BusinessEntityID = BusinessEntityAddress2.BusinessEntityID  
+INNER JOIN Person.Address AS Address2  
+    ON BusinessEntityAddress2.AddressID = Address2.AddressID  
+
+WHERE Address1.City <> Address2.City;
+
+
