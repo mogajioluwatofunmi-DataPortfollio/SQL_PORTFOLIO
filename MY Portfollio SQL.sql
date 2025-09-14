@@ -201,7 +201,7 @@ JOIN Person.BusinessEntityAddress
     ON Person.Person.BusinessEntityID = Person.BusinessEntityAddress.BusinessEntityID
 JOIN Person.Address
     ON Person.BusinessEntityAddress.AddressID = Person.Address.AddressID
-WHERE HumanResources.Employee.JobTitle LIKE '%Engineer%'
+WHERE HumanResources.Employee.JobTitle LIKE '%Manager%'
   AND Person.Address.City = 'Rentol';
 
 
